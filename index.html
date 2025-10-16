@@ -104,6 +104,11 @@
         },
       }
     </script>
+  <!-- 1. Add ES Module Shims and Babel for in-browser transpilation -->
+  <script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <!-- 2. The import map tells the browser (via the shim) where to find modules -->
   <script type="importmap">
 {
   "imports": {
@@ -117,10 +122,39 @@
   }
 }
 </script>
+
+  <!-- 3. Configure the shim to use Babel for transpiling TSX/TS files -->
+  <script>
+    // Configure ES Module Shims to use Babel for on-the-fly transpilation of TSX/TS files.
+    // This allows running the React app from source files without a build step.
+    window.esmsInitOptions = {
+      // The fetch hook intercepts module loading.
+      fetch: async (url, options) => {
+        const res = await fetch(url, options);
+        const fileUrl = new URL(res.url);
+
+        // Check if the file is a TS/TSX file that needs transpilation.
+        if (fileUrl.pathname.endsWith('.tsx') || fileUrl.pathname.endsWith('.ts')) {
+          const source = await res.text();
+          // Use Babel to transpile from TSX to JS.
+          const transformed = Babel.transform(source, {
+            presets: ["react", "typescript"],
+            filename: fileUrl.pathname // Important for Babel to know how to parse
+          }).code;
+          // Return the transpiled code as a JavaScript module.
+          return new Response(new Blob([transformed], { type: 'application/javascript' }));
+        }
+        // For all other files, return the original response.
+        return res;
+      }
+    }
+  </script>
 <link rel="stylesheet" href="/index.css">
 </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
-  </body>
+    <!-- 4. Load the main app script using "module-shim" to enable transpilation -->
+    <script type="module-shim" src="/index.tsx"></script>
+  <script type="module" src="/index.tsx"></script>
+</body>
 </html>
