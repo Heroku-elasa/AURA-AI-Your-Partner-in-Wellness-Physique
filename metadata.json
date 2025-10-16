@@ -1,0 +1,9 @@
+{
+  "name": "Copy of AURA AI | Wellness & Physique number ۲",
+  "description": "Your AI partner for personalized beauty, wellness, and fitness coaching. Get skin analysis, workout plans, and visualize your transformation.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation",
+    "microphone"
+  ]
+}
