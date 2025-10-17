@@ -49,6 +49,7 @@ const SiteHeader: React.FC<SiteHeaderProps> = ({ currentPage, setPage, isAuthent
     { key: 'join_us', text: t('header.joinUs'), action: () => handlePageChange('join_us') },
     { key: 'seller_hub', text: t('header.sellerHub'), action: () => handlePageChange('seller_hub') },
     { key: 'my_consultations', text: t('header.myPlans'), action: () => handlePageChange('my_consultations') },
+    { key: 'download_app', text: t('header.downloadApp'), action: () => handlePageChange('download_app') },
   ];
 
   const servicesLinks = [

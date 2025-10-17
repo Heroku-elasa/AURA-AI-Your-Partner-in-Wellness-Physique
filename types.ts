@@ -21,6 +21,7 @@ const translations: Record<string, any> = {
             myPlans: "My Plans",
             login: "Login / Sign Up",
             logout: "Logout",
+            downloadApp: "Download App",
         },
         hero: {
             title: "AURA AI: Your Partner in<br/>Wellness & Physique",
@@ -73,6 +74,13 @@ const translations: Record<string, any> = {
             emptyTitle: "No plans saved",
             emptyText: "Your saved AI plans will appear here.",
             goBackButton: "Start a New Assessment",
+        },
+        downloadAppPage: {
+            title: "Get the AURA AI App",
+            subtitle: "Take your personalized wellness and physique coach with you. Track your progress, access your plans, and connect with your AI coach anytime, anywhere.",
+            appStore: "Download on the App Store",
+            googlePlay: "Get it on Google Play",
+            scanQr: "Scan to Download",
         },
         footer: {
             description: "Your AI partner for personalized beauty, wellness, and fitness coaching.",
@@ -274,6 +282,8 @@ const translations: Record<string, any> = {
         },
         validation: {
             required: "This field is required.",
+            email: "Please enter a valid email address.",
+            passwordLength: "Password must be at least 6 characters long.",
         },
         sellerHub: {
              presets: {
@@ -428,6 +438,7 @@ const translations: Record<string, any> = {
             myPlans: "برنامه‌های من",
             login: "ورود / ثبت نام",
             logout: "خروج",
+            downloadApp: "دانلود اپلیکیشن",
         },
         hero: {
             title: "AURA AI: همراه شما در<br/>سلامتی و تناسب اندام",
@@ -480,6 +491,13 @@ const translations: Record<string, any> = {
             emptyTitle: "هیچ برنامه‌ای ذخیره نشده است",
             emptyText: "برنامه‌های ذخیره شده شما در اینجا نمایش داده می‌شوند.",
             goBackButton: "شروع ارزیابی جدید",
+        },
+         downloadAppPage: {
+            title: "اپلیکیشن AURA AI را دریافت کنید",
+            subtitle: "مربی شخصی سلامتی و تناسب اندام خود را همیشه همراه داشته باشید. پیشرفت خود را پیگیری کنید، به برنامه‌های خود دسترسی داشته باشید و در هر زمان و مکان با مربی هوشمند خود در ارتباط باشید.",
+            appStore: "دانلود از اپ استور",
+            googlePlay: "دریافت از گوگل پلی",
+            scanQr: "برای دانلود اسکن کنید",
         },
         footer: {
             description: "همراه هوشمند شما برای زیبایی، سلامتی و مربیگری تناسب اندام شخصی‌سازی‌شده.",
@@ -681,6 +699,8 @@ const translations: Record<string, any> = {
         },
         validation: {
             required: "این فیلد الزامی است.",
+            email: "لطفا یک آدرس ایمیل معتبر وارد کنید.",
+            passwordLength: "رمز عبور باید حداقل ۶ کاراکتر باشد.",
         },
         sellerHub: {
             presets: {
@@ -852,7 +872,8 @@ export type Page =
   | 'cosmetic_simulator'
   | 'physique_simulator'
   | 'case_study_bayer_aflak'
-  | 'join_us';
+  | 'join_us'
+  | 'download_app';
 
 export type SurgeryType = 'rhinoplasty' | 'blepharoplasty' | 'genioplasty' | 'lipAugmentation' | 'facelift' | 'jawSurgery';
 

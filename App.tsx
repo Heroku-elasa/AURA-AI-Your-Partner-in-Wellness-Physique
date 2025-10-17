@@ -18,6 +18,7 @@ import SimulatorPage from './components/SurgerySimulatorPage';
 import SearchModal from './components/SearchModal';
 import ProAthletePlatformPage from './components/BayerAflakPage';
 import JoinUsPage from './components/JoinUsPage';
+import DownloadAppPage from './components/DownloadAppPage';
 import { Page, SavedConsultation, ProviderSearchResult, Message, SearchResultItem, useLanguage } from './types';
 import { useToast } from './components/Toast';
 import { initDB, saveConsultation as saveDb, getAllSavedConsultations, deleteConsultation as deleteDb } from './services/dbService';
@@ -197,6 +198,7 @@ const App: React.FC = () => {
           { name: t('header.collaboration'), target: 'collaboration', description: t('collaborationPage.goalText') },
           { name: t('header.joinUs'), target: 'join_us', description: t('joinUsPage.subtitle') },
           { name: t('header.myPlans'), target: 'my_consultations', description: t('myPlansPage.subtitle') },
+          { name: t('header.downloadApp'), target: 'download_app', description: t('downloadAppPage.subtitle') },
       ];
 
       const searchIndex = `
@@ -282,6 +284,8 @@ const App: React.FC = () => {
             onRestore={handleRestoreConsultation}
             setPage={setPage} 
         />;
+      case 'download_app':
+        return <DownloadAppPage />;
       default:
         return <HomePage setPage={setPage} />;
     }
