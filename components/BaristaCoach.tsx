@@ -34,8 +34,6 @@ const AICoachChatPage: React.FC<AICoachChatPageProps> = ({ chatHistory, isStream
 
   const renderMessage = (msg: Message, index: number) => {
     const isUser = msg.role === 'user';
-    const isLastMessage = index === chatHistory.length - 1;
-    const showTypingIndicator = isStreaming && isLastMessage && msg.role === 'model' && msg.parts[0].text === '';
     
     return (
       <div key={index} className={`flex items-end gap-3 ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -49,15 +47,7 @@ const AICoachChatPage: React.FC<AICoachChatPageProps> = ({ chatHistory, isStream
         <div className={`max-w-xl p-4 rounded-2xl shadow-md ${isUser ? 'bg-teal-600 text-white rounded-br-lg' : 'bg-gray-700 text-gray-200 rounded-bl-lg'}`}>
           <p className="text-sm leading-relaxed" style={{ whiteSpace: 'pre-wrap' }}>
             {msg.parts[0].text}
-            {isStreaming && isLastMessage && !isUser && msg.parts[0].text !== '' && <span className="inline-block w-2 h-4 bg-white ml-1 animate-pulse"></span>}
           </p>
-           {showTypingIndicator && (
-             <div className="flex items-center space-x-1 p-2">
-                <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0s' }}></span>
-                <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
-                <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
-             </div>
-           )}
         </div>
       </div>
     );
@@ -74,6 +64,22 @@ const AICoachChatPage: React.FC<AICoachChatPageProps> = ({ chatHistory, isStream
         <div className="mt-12 bg-gray-800/50 rounded-lg shadow-2xl backdrop-blur-sm border border-white/10 flex flex-col h-[70vh] max-h-[700px]">
           <div className="flex-1 p-6 space-y-6 overflow-y-auto">
             {chatHistory.map(renderMessage)}
+            {isStreaming && (
+                <div className="flex items-end gap-3 justify-start">
+                    <div className="flex-shrink-0 w-8 h-8 bg-teal-800 rounded-full flex items-center justify-center border-2 border-teal-600">
+                        <svg className="h-5 w-5 text-teal-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10 3.5a1.5 1.5 0 011.396 2.21l-4.133 7.032a1.5 1.5 0 01-2.592-1.525L8.604 5.71A1.5 1.5 0 0110 3.5zM10 3.5a1.5 1.5 0 00-1.396 2.21l4.133 7.032a1.5 1.5 0 002.592-1.525L11.396 5.71A1.5 1.5 0 0010 3.5z" />
+                        </svg>
+                    </div>
+                    <div className="max-w-xl p-4 rounded-2xl shadow-md bg-gray-700 rounded-bl-lg">
+                        <div className="flex items-center space-x-1 p-1">
+                            <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0s' }}></span>
+                            <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
+                            <span className="w-2 h-2 bg-teal-300 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
+                        </div>
+                    </div>
+                </div>
+            )}
             <div ref={chatEndRef}></div>
           </div>
 

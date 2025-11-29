@@ -52,18 +52,51 @@ const HomePage: React.FC<HomePageProps> = ({ setPage }) => {
             dangerouslySetInnerHTML={{ __html: t('hero.title') }}
           />
           <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">{t('hero.subtitle')}</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 pt-4">
               <button
                 onClick={() => setPage('skin_consultation')}
-                className="px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all text-lg shadow-lg hover:shadow-rose-500/40 transform duration-300 hover:scale-105"
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-bold rounded-lg hover:from-rose-600 hover:to-pink-600 transition-all text-lg shadow-lg hover:shadow-rose-500/40 transform duration-300 hover:scale-105"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 rtl:ml-3 rtl:mr-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9 9.75h.008v.008H9V9.75zm6 0h.008v.008H15V9.75z" />
+                </svg>
                 {t('hero.button1')}
               </button>
               <button
                 onClick={() => setPage('fitness_assessment')}
-                className="px-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold rounded-lg hover:from-teal-600 hover:to-cyan-600 transition-all text-lg shadow-lg hover:shadow-teal-500/40 transform duration-300 hover:scale-105 animate-pulse-glow"
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold rounded-lg hover:from-teal-600 hover:to-cyan-600 transition-all text-lg shadow-lg hover:shadow-teal-500/40 transform duration-300 hover:scale-105 animate-pulse-glow"
               >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 rtl:ml-3 rtl:mr-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
                 {t('hero.button2')}
+              </button>
+               <button
+                onClick={() => setPage('live_beauty_coach')}
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-fuchsia-500 to-purple-500 text-white font-bold rounded-lg hover:from-fuchsia-600 hover:to-purple-600 transition-all text-lg shadow-lg hover:shadow-fuchsia-500/40 transform duration-300 hover:scale-105"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 rtl:ml-3 rtl:mr-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                {t('hero.button5')}
+              </button>
+              <button
+                onClick={() => setPage('posture_analysis')}
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-purple-500 to-indigo-500 text-white font-bold rounded-lg hover:from-purple-600 hover:to-indigo-600 transition-all text-lg shadow-lg hover:shadow-purple-500/40 transform duration-300 hover:scale-105"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 rtl:ml-3 rtl:mr-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2m8-10a4 4 0 100-8 4 4 0 000 8z" />
+                </svg>
+                {t('hero.button3')}
+              </button>
+               <button
+                onClick={() => setPage('conversation_coach')}
+                className="flex items-center justify-center px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all text-lg shadow-lg hover:shadow-amber-500/40 transform duration-300 hover:scale-105"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-3 rtl:ml-3 rtl:mr-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a2 2 0 01-2-2V7a2 2 0 012-2h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H17z" />
+                </svg>
+                {t('hero.button4')}
               </button>
           </div>
         </div>

@@ -8,7 +8,7 @@ import {
   PreTreatmentPlanResult,
   PreTreatmentPlanItem,
 } from '../types';
-import * as geminiService from '../services/geminiService';
+import { generateAftercare, calculateTreatmentCosts, generatePreTreatmentPlan } from '../services/geminiService';
 
 interface ConsultationDetailModalProps {
   isOpen: boolean;
@@ -69,7 +69,7 @@ const ConsultationDetailModal: React.FC<ConsultationDetailModalProps> = ({ isOpe
     setIsGeneratingAftercare(true);
     setAftercareError(null);
     try {
-      const result = await geminiService.generateAftercare(plan, language);
+      const result = await generateAftercare(plan, language);
       setAftercare(result);
     } catch (err) {
       setAftercareError(handleApiError(err));
@@ -82,7 +82,7 @@ const ConsultationDetailModal: React.FC<ConsultationDetailModalProps> = ({ isOpe
     setIsCalculatingCosts(true);
     setCostsError(null);
     try {
-      const result = await geminiService.calculateTreatmentCosts(plan, language);
+      const result = await calculateTreatmentCosts(plan, language);
       setCostAnalysis(result);
     } catch (err) {
       setCostsError(handleApiError(err));
@@ -95,7 +95,7 @@ const ConsultationDetailModal: React.FC<ConsultationDetailModalProps> = ({ isOpe
     setIsGeneratingPrePlan(true);
     setPrePlanError(null);
     try {
-      const result = await geminiService.generatePreTreatmentPlan(plan, language);
+      const result = await generatePreTreatmentPlan(plan, language);
       setPrePlan(result);
     } catch (err) {
       setPrePlanError(handleApiError(err));

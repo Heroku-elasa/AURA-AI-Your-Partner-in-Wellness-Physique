@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { generateSpecialists } from '../services/geminiService';
 import { SpecialistProfile, ConsultationResult } from '../types';

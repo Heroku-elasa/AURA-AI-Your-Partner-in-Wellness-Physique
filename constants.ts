@@ -102,3 +102,9 @@ export const CULTURAL_PROMPTS: { [key in Language]: string[] } = {
     'لدي هالات سوداء تحت عيني لا تختفي حتى مع النوم الكافي، مما يجعلني أبدو متعبة طوال الوقت.',
   ],
 };
+
+export const MOCK_USER_SEARCHES: string[] = [
+  "best serum for oily skin", "how to get rid of acne scars", "protein powder for muscle gain", "HIIT workout for fat loss", "what is collagen", "retinol for beginners", "anti-aging treatments", "how to build a bigger chest", "best diet for weight loss", "collagen supplement benefits", "reduce wrinkles", "increase deadlift strength", "best sunscreens for sensitive skin",
+  "خرید کرم ضد چروک", "فواید کلاژن برای پوست", "بهترین تمرین برای سیکس پک", "رژیم غذایی برای کاهش وزن سریع", "چگونه جوش صورت را از بین ببریم", "مکمل کراتین چیست", "درمان ریزش مو با هوش مصنوعی", "فواید سرم ویتامین سی", "حرکات ورزشی برای تقویت بازو", "کلاژن سازی پوست", "لیزر موهای زائد", "بهترین مکمل برای افزایش حجم", "ضد آفتاب برای پوست چرب",
+  "what is hyaluronic acid", "korean skincare routine", "how to start lifting weights", "meal prep for fat loss", "is creatine safe", "microneedling benefits", "signs of overtraining", "best collagen peptides", "تمرینات قدرتی برای بانوان", "سرم ویتامین سی برای لک صورت", "راه های افزایش تستوسترون", "پروتئین وی یا کازئین",
+];

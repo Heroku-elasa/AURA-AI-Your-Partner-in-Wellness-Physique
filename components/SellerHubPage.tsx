@@ -17,6 +17,10 @@ interface Product {
     stock: string;
 }
 
+const MAX_FILE_SIZE_MB = 10;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
 const SellerHubPage: React.FC<SellerHubPageProps> = ({ handleApiError }) => {
     const { language, t } = useLanguage();
     const [products, setProducts] = useState<Product[]>([{ id: crypto.randomUUID(), name: '', description: '', price: '', category: '', brand: '', stock: '' }]);
@@ -71,11 +75,23 @@ const SellerHubPage: React.FC<SellerHubPageProps> = ({ handleApiError }) => {
 
 
     const handleImageFile = (file: File) => {
+        if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) {
+            handleApiError(`Unsupported file type. Please upload a JPEG, PNG, or WebP image.`);
+            return;
+        }
+        if (file.size > MAX_FILE_SIZE_BYTES) {
+            handleApiError(`File is too large. Please upload an image smaller than ${MAX_FILE_SIZE_MB}MB.`);
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = (e) => {
             const base64String = (e.target?.result as string).split(',')[1];
             setImageBase64(base64String);
             setImageMimeType(file.type);
+        };
+        reader.onerror = () => {
+            handleApiError('An error occurred while reading the file.');
         };
         reader.readAsDataURL(file);
     };
@@ -104,6 +120,11 @@ const SellerHubPage: React.FC<SellerHubPageProps> = ({ handleApiError }) => {
             };
 
             mediaRecorderRef.current.onstop = async () => {
+                if (audioChunksRef.current.length === 0) {
+                    setError(handleApiError("No audio was recorded. Please try again and speak for a moment."));
+                    stream.getTracks().forEach(track => track.stop());
+                    return;
+                }
                 const audioBlob = new Blob(audioChunksRef.current, { type: audioChunksRef.current[0].type });
                 const audioB64 = await blobToBase64(audioBlob);
                 setAudioBase64(audioB64);
@@ -116,7 +137,7 @@ const SellerHubPage: React.FC<SellerHubPageProps> = ({ handleApiError }) => {
             setIsRecording(true);
         } catch (err) {
             console.error("Error accessing microphone:", err);
-            setError("Could not access microphone. Please check permissions.");
+            setError(handleApiError("Could not access microphone. Please check permissions."));
         }
     };
 

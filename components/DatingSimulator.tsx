@@ -164,7 +164,7 @@ const ConversationCoach: React.FC<ConversationCoachProps> = ({
                     {Object.entries(state.currentAnalysis.scores).filter(([, value]) => (value as number) > 0).map(([key, value]) => (
                         <div key={key} className="bg-gray-800 p-4 rounded-lg">
                             <div className="text-3xl font-bold text-rose-400">{value as number}</div>
-                            <div className="text-sm text-gray-400 capitalize">{t(`coach.scores.${key.toLowerCase()}`)}</div>
+                            <div className="text-sm text-gray-400 capitalize">{t(`coach.scores.${key}`)}</div>
                         </div>
                     ))}
                 </div>

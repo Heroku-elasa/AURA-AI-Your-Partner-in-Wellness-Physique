@@ -26,6 +26,7 @@ interface ConsultationFormProps {
   setImageBase64: (value: React.SetStateAction<string | null>) => void;
   imageMimeType: string | null;
   setImageMimeType: (value: React.SetStateAction<string | null>) => void;
+  handleApiError: (error: unknown) => void;
 }
 
 const ConsultationForm: React.FC<ConsultationFormProps> = ({ 
@@ -40,6 +41,7 @@ const ConsultationForm: React.FC<ConsultationFormProps> = ({
   setImageBase64,
   imageMimeType,
   setImageMimeType,
+  handleApiError,
 }) => {
   const { language, t } = useLanguage();
   const [isListening, setIsListening] = useState(false);
@@ -104,11 +106,28 @@ const ConsultationForm: React.FC<ConsultationFormProps> = ({
   };
   
   const handleImageFile = (file: File) => {
+      const MAX_FILE_SIZE_MB = 10;
+      const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+      const SUPPORTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+      if (!SUPPORTED_IMAGE_TYPES.includes(file.type)) {
+          handleApiError(`Unsupported file type. Please upload a JPEG, PNG, or WebP image.`);
+          return;
+      }
+
+      if (file.size > MAX_FILE_SIZE_BYTES) {
+          handleApiError(`File is too large. Please upload an image smaller than ${MAX_FILE_SIZE_MB}MB.`);
+          return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
           const base64String = (e.target?.result as string).split(',')[1];
           setImageBase64(base64String);
           setImageMimeType(file.type);
+      };
+      reader.onerror = () => {
+          handleApiError('An error occurred while reading the file.');
       };
       reader.readAsDataURL(file);
   };
@@ -192,66 +211,29 @@ const ConsultationForm: React.FC<ConsultationFormProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                      <input type="file" accept="image/*" ref={fileInputRef} onChange={onFileChange} className="hidden" />
                      <input type="file" accept="image/*" capture="user" ref={cameraInputRef} onChange={onFileChange} className="hidden" />
-                     <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gray-700/80 text-gray-200 rounded-md hover:bg-gray-600 hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 5.414V13a1 1 0 11-2 0V5.414L7.707 6.707a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
-                        <span>{t('assessment.form.uploadButton')}</span>
-                     </button>
-                     <button type="button" onClick={() => cameraInputRef.current?.click()} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gray-700/80 text-gray-200 rounded-md hover:bg-gray-600 hover:text-white transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" /></svg>
-                        <span>{t('assessment.form.cameraButton')}</span>
-                     </button>
+                     <button type="button" onClick={() => fileInputRef.current?.click()} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gray-700/80 rounded-md hover:bg-gray-600 transition-colors">{t('assessment.form.uploadButton')}</button>
+                     <button type="button" onClick={() => cameraInputRef.current?.click()} className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gray-700/80 rounded-md hover:bg-gray-600 transition-colors">{t('assessment.form.cameraButton')}</button>
                 </div>
             )}
+            <p className="text-xs text-gray-500 mt-2 text-center">
+                Supported formats: JPEG, PNG, WebP. Max size: 10MB.
+            </p>
         </div>
-
-        {/* Details Form */}
+        
         <div className="pt-4 border-t border-white/10">
-          <h3 className="text-lg font-semibold text-gray-200 mb-4">{t('assessment.form.detailsTitle')}</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-            
-            <div>
-              <label htmlFor="aggravatingFactors" className="block text-sm font-medium text-gray-300">{t('assessment.form.aggravatingFactors')}</label>
-              <input type="text" name="aggravatingFactors" id="aggravatingFactors" value={symptomDetails.aggravatingFactors} onChange={handleDetailChange} className="mt-1 block w-full bg-gray-900 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-white" />
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">{t('assessment.form.detailsTitle')}</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input type="text" name="aggravatingFactors" value={symptomDetails.aggravatingFactors} onChange={handleDetailChange} placeholder={t('assessment.form.aggravatingFactors')} className="bg-gray-700 border-gray-600 rounded-md p-2 text-white text-sm" />
+                <input type="text" name="alleviatingFactors" value={symptomDetails.alleviatingFactors} onChange={handleDetailChange} placeholder={t('assessment.form.alleviatingFactors')} className="bg-gray-700 border-gray-600 rounded-md p-2 text-white text-sm" />
+                <input type="text" name="duration" value={symptomDetails.duration} onChange={handleDetailChange} placeholder={t('assessment.form.duration')} className="bg-gray-700 border-gray-600 rounded-md p-2 text-white text-sm" />
+                <input type="text" name="previousTreatments" value={symptomDetails.previousTreatments} onChange={handleDetailChange} placeholder={t('assessment.form.previousTreatments')} className="bg-gray-700 border-gray-600 rounded-md p-2 text-white text-sm" />
+                <input type="text" name="medications" value={symptomDetails.medications} onChange={handleDetailChange} placeholder={t('assessment.form.medications')} className="bg-gray-700 border-gray-600 rounded-md p-2 text-white text-sm sm:col-span-2" />
             </div>
-
-            <div>
-              <label htmlFor="alleviatingFactors" className="block text-sm font-medium text-gray-300">{t('assessment.form.alleviatingFactors')}</label>
-              <input type="text" name="alleviatingFactors" id="alleviatingFactors" value={symptomDetails.alleviatingFactors} onChange={handleDetailChange} className="mt-1 block w-full bg-gray-900 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-white" />
-            </div>
-
-            <div className="sm:col-span-2">
-              <label htmlFor="duration" className="block text-sm font-medium text-gray-300">{t('assessment.form.duration')}</label>
-              <input type="text" name="duration" id="duration" value={symptomDetails.duration} onChange={handleDetailChange} placeholder={t('assessment.form.durationPlaceholder')} className="mt-1 block w-full bg-gray-900 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-white" />
-            </div>
-            
-            <div>
-                <label htmlFor="previousTreatments" className="block text-sm font-medium text-gray-300">{t('assessment.form.previousTreatments')}</label>
-                <input type="text" name="previousTreatments" id="previousTreatments" value={symptomDetails.previousTreatments} onChange={handleDetailChange} className="mt-1 block w-full bg-gray-900 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-white" />
-            </div>
-
-            <div>
-                <label htmlFor="medications" className="block text-sm font-medium text-gray-300">{t('assessment.form.medications')}</label>
-                <input type="text" name="medications" id="medications" value={symptomDetails.medications} onChange={handleDetailChange} className="mt-1 block w-full bg-gray-900 border-gray-600 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-rose-500 focus:border-rose-500 sm:text-sm text-white" />
-            </div>
-
-          </div>
         </div>
 
-
-        <div>
-          <button
-            type="submit"
-            disabled={isLoading || isQuotaExhausted || (!symptoms.trim() && !imageBase64)}
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-rose-500 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors"
-          >
-            {isLoading ? (
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-            ) : isQuotaExhausted ? t('quotaErrorModal.title') : t('assessment.form.buttonText')}
-          </button>
-        </div>
+        <button type="submit" disabled={isLoading || isQuotaExhausted} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-rose-500 disabled:bg-gray-500 disabled:cursor-not-allowed transition-colors">
+          {isLoading ? t('assessment.report.generating') : isQuotaExhausted ? t('quotaErrorModal.title') : t('assessment.form.buttonText')}
+        </button>
       </form>
     </div>
   );

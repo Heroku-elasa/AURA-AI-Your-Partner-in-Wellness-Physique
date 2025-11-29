@@ -1,8 +1,6 @@
-
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLanguage, MarketTrendsResult, InDepthAnalysis, SWOTAnalysis, QuickSummary, MarketAnalysisMode, Source } from '../types';
-import * as geminiService from '../services/geminiService';
+import { generateMarketAnalysis } from '../services/geminiService';
 
 interface MarketTrendsPageProps {
     handleApiError: (err: unknown) => string;
@@ -109,7 +107,7 @@ const MarketTrendsPage: React.FC<MarketTrendsPageProps> = ({ handleApiError }) =
         setError(null);
         setResult(null);
         try {
-            const rawResult = await geminiService.generateMarketAnalysis(searchQuery, language, mode);
+            const rawResult = await generateMarketAnalysis(searchQuery, language, mode);
             const parsedResult = parseMarketAnalysis(rawResult, mode);
             setResult(parsedResult);
         } catch (err) {
